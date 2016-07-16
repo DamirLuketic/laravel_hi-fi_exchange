@@ -14,6 +14,8 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
+    // uses of not native name "user_created_id" -> for better column description
+            $table->integer('user_created_id');
             $table->integer('category_id');
             $table->string('model');
             $table->text('specification');

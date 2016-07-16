@@ -1,24 +1,20 @@
-@if(Cookie::get('user'))
+@if(Auth::check())
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
 
-                <li> <a href="{{route('posts.index')}}">Posts</a></li>
+                <li> <a href="#">User</a></li>
 
                 <li>
-                    <a href="{{route('posts.create')}}"><i class="fa fa-wrench fa-fw"></i>Create post</a>
+                    <a href="#">Product:</a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="{{route('posts.show', 1)}}">Category 1</a>
+                            <a href="{{route('products.index')}}">List</a>
                         </li>
 
                         <li>
-                            <a href="{{route('posts.show', 2)}}">Category 2</a>
-                        </li>
-
-                        <li>
-                            <a href="{{route('posts.show', 3)}}">Category 3</a>
+                            <a href="{{route('products.create')}}">Crate</a>
                         </li>
 
                     </ul>

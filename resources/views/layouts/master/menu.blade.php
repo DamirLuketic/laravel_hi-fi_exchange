@@ -5,7 +5,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">Home</a>
+    <a class="navbar-brand" href="{{route('index')}}">Home</a>
 </div>
 <!-- /.navbar-header -->
 
@@ -24,9 +24,11 @@
     @else
 
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome </a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome {{ Auth::user()->name }}</a>
 
         <li><a href="{{ url('/logout') }}">Logout</a></li>
+
+        <li><a href="{{ route('users.edit', Auth::user()->slug) }}">Personal</a></li>
 
     @endif
 
