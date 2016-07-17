@@ -23,7 +23,7 @@
     <td>image</td>
     <td>{{$product->category->name}}</td>
     <td><a href="{{route('products.show', $product->id)}}">{{$product->model}}</a></td>
-    <td>user</td>
+    <td><a href="{{route('users.show', $product->user_created->id)}}">{{$product->user_created->name}}</a></td>
     <td>{{$product->created_at->diffForHumans()}}</td>
   </tr>
 

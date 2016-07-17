@@ -4,7 +4,7 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
 
-                <li> <a href="#">User</a></li>
+                <li> <a href="{{route('users.index')}}">Users</a></li>
 
                 <li>
                     <a href="#">Product:</a>

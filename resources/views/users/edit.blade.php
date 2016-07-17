@@ -67,6 +67,32 @@
 
         {!! Form::close() !!}
 
+        <br /><br /><br /><br />
+
+        <h4>Equipment:</h4>
+
+        <br />
+
+        <table class="table">
+            <tr>
+                <th>image</th>
+                <th>Category:</th>
+                <th>Model:</th>
+            </tr>
+
+            @foreach($products as $product)
+
+                <tr>
+                    <td>image</td>
+                    <td>{{$product->category->name}}</td>
+                    <td>{{$product->model}}</td>
+                    <td><a href="{{route('products.show', $product->id)}}">view</a></td>
+                </tr>
+
+            @endforeach
+
+        </table>
+
     </div>
 
 </div>

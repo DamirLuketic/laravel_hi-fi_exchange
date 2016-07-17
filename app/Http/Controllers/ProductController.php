@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Image;
 use App\Product;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -72,6 +73,26 @@ class ProductController extends Controller
 
         // find product
         $product = Product::findOrFail($id);
+        
+        // find if product have image, if not give product default image
+        // Accessor in Image model give default value to path, so we have one more check
+
+        $product_image = '/hi-fi_exchange/public/image/ProductPlaceholder.jpg';
+
+        if (isset($product->image))
+        {
+            foreach ($product->image as $item)
+            {
+                if($item->path == '/hi-fi_exchange/public/image/')
+                {
+                    $product_image = '/hi-fi_exchange/public/image/ProductPlaceholder.jpg';
+                } else
+                {
+                    $product_image = $item->path;
+                }
+            }
+
+        }
 
         // find user who have this product
         $users = $product->users;
@@ -86,13 +107,18 @@ class ProductController extends Controller
         // Find if current user is owner of product, and put this data in variable
         if(in_array(Auth::user()->id, $users_array))
         {
-            $owner = 1;
+            $owner = true;
         }else
         {
-            $owner = 0;
+            $owner = false;
         }
 
-        return view('products.show', compact('product', 'owner'));
+        // Find all user who own this product
+
+        $owners = User::whereIn('id', $users_array)->get();
+
+
+        return view('products.show', compact('product', 'product_image', 'owner', 'owners'));
     }
 
     /**

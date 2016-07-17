@@ -5,12 +5,13 @@
 @section('content')
 
     <h3>Product {{$product->model}}:</h3>
+    <br />
 
 <div class="row">
 
     <div class="col-lg-3">
 
-        <p>image</p>
+        <img height='300' src="{{ $product_image }}" alt=""><br><br>
 
     </div>
 
@@ -26,7 +27,7 @@
           <tr>
             <td>{{$product->category->name}}</td>
             <td>{{$product->model}}</td>
-            <td>{{$product->user_created_id}}</td>
+            <td><a href="{{route('users.show', $product->user_created->id)}}">{{$product->user_created->name}}</a></td>
             <td>{{$product->created_at->diffForHumans()}}</td>
           </tr>
         </table>
@@ -79,6 +80,35 @@
 
             @endif
 
+        <br />
+
+        <h4>Product owners:</h4>
+
+        <table class="table">
+          <tr>
+            <th>Name:</th>
+            <th>E-mail:</th>
+          </tr>
+
+            {{-- Part for show all owner of this product -> we do't use variable "owner" for value in foreach
+                  because this variable is earlier defined, and in this way is more cleaner view of code
+            --}}
+            @foreach($owners as $own)
+
+                {{-- Don't show current user as product owner \ person have this data through "Attach\Detach" option --}}
+                @if($own->id != Auth::user()->id)
+
+          <tr>
+            <td>{{$own->name}}</td>
+            <td>{{$own->email}}</td>
+            <td><a href="{{route('users.show', $own->id)}}">view</a></td>
+          </tr>
+
+                @endif
+
+                @endforeach
+
+        </table>
 
     </div>
 

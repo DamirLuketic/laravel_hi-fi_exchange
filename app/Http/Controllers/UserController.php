@@ -16,9 +16,19 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    // add "Request and $request" in index method -> needed for access data from search
+    public function index(Request $request)
     {
-        //
+
+        // data from searc
+        $query = $request->search;
+
+        // find users with term, and paginate page
+        $users = User::where('name', 'LIKE', '%' . $query . '%')->paginate(10);
+
+        // send found users data, with search term
+        return view('users.index', compact('users', 'query'));
     }
 
     /**
@@ -50,7 +60,34 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
+        // user data
+        $user = User::findOrFail($id);
+
+        // user products (for view)
+        $products = $user->products;
+
+        // find if user set image, if not give them default image
+        // Accessor in Image model give default value to path, so we have one more check
+
+        $user_image = '/hi-fi_exchange/public/image/ProfilePlaceholder.png';
+
+        if (isset($user->image))
+        {
+            foreach ($user->image as $item)
+            {
+                if($item->path == '/hi-fi_exchange/public/image/')
+                {
+                    $user_image = '/hi-fi_exchange/public/image/ProfilePlaceholder.png';
+                } else
+                {
+                    $user_image = $item->path;
+                }
+            }
+
+        }
+
+        return view('users.show', compact('user', 'products', 'user_image'));
     }
 
     /**
@@ -64,6 +101,9 @@ class UserController extends Controller
 
         // use native 'Auth' -> so other user can't access personal data edit page
         $user = Auth::user();
+
+        // variable "products" is send to edit page to show user equipment and edit ownership
+        $products = $user->products;
 
         // find if user set image, if not give them default image
         // Accessor in Image model give default value to path, so we have one more check
@@ -86,7 +126,7 @@ class UserController extends Controller
         }
 
 
-        return view('users.edit', compact('user', 'user_image'));
+        return view('users.edit', compact('user', 'products', 'user_image'));
     }
 
     /**

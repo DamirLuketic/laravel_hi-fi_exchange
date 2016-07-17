@@ -18,8 +18,14 @@ class Product extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function images()
+    public function image()
     {
         return $this->morphMany('App\Image', 'imageable');
+    }
+
+    // method for access user who created product -> add name out of Laravel syntax for better description of property
+    public function user_created()
+    {
+        return $this->belongsTo('App\User', 'user_created_id');
     }
 }
