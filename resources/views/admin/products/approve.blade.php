@@ -21,7 +21,7 @@
         <td>{{$product->category->name}}</td>
         <td>{{$product->model}}</td>
         <td>{{$product->created_at->diffForHumans()}}</td>
-        <td>{{$product->user_created->name}}</td>
+        <td><a href="{{route('users.show', $product->user_created->id)}}">{{$product->user_created->name}}</a></td>
         <td>{{$product->approved === 1 ? 'Approved' : 'Not Approved'}}</td>
         <td><a href="{{route('admin.products.edit', $product->id)}}">view</a></td>
       </tr>
