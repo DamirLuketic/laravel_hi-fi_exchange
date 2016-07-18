@@ -10,7 +10,6 @@
 
 <table class="table">
   <tr>
-    <th>Image:</th>
     <th>Category:</th>
     <th>Model:</th>
     <th>User created:</th>
@@ -20,7 +19,6 @@
     @foreach($products as $product)
 
   <tr>
-    <td>image</td>
     <td>{{$product->category->name}}</td>
     <td><a href="{{route('products.show', $product->id)}}">{{$product->model}}</a></td>
     <td><a href="{{route('users.show', $product->user_created->id)}}">{{$product->user_created->name}}</a></td>

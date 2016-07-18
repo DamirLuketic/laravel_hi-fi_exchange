@@ -16,8 +16,24 @@
                         <li>
                             <a href="{{route('products.create')}}">Crate</a>
                         </li>
+                    </ul>
+
+                    {{-- Admin part --}}
+
+
+                    @if(Auth::user()->role_id === 1)
+
+                    <a href="#">Admin:</a>
+
+                    <ul class="nav nav-second-level">
+
+                            <li>
+                                <a href="{{route('admin.products.index')}}">Approve</a>
+                            </li>
 
                     </ul>
+                @endif
+
                     <!-- /.nav-second-level -->
                 </li>
 

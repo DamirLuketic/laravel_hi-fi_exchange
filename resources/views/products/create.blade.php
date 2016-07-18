@@ -6,13 +6,11 @@
 
     <h3>Insert Product:</h3>
 
-    <br />
-
     <div class="row">
 
             </div>
 
-                <div class="col-sm-9">
+                <div class="col-lg-9">
 
                 {!! Form::open(['method' => 'POST', 'action' => 'ProductController@store', 'files' => true]) !!}
 
@@ -71,6 +69,12 @@
                 </div>
 
                     {!! Form::close() !!}
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    @include('includes.form_error')
 
                 </div>
 

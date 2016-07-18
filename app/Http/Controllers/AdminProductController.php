@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Requests\ProductCreateRequest;
-use App\Image;
 use App\Product;
 use App\User;
 use Illuminate\Http\Request;
@@ -12,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+class AdminProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +18,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::whereApproved(1)->paginate(10);
-        
-        return view('products.index', compact('products'));
+        $products = Product::orderBy('approved', 'asc')->orderBy('created_at', 'asc')->get();
+
+        return view('admin.products.approve', compact('products'));
     }
 
     /**
@@ -33,9 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::lists('name', 'id')->all();
-        
-        return view('products.create', compact('categories'));
+        //
     }
 
     /**
@@ -44,23 +39,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductCreateRequest $request)
+    public function store(Request $request)
     {
-        // first create db input for product, because we need to have product id for image
-        $product = Product::create($request->all());
-
-        if( $image = $request->file('image')){
-            
-            $name = time() . $image->getClientOriginalName();
-            $image->move('image', $name);
-
-            // this is not typical insert for image, because we uses "one to one" relation for image,
-            // but insert in "one to many" polymorphic table.
-            // We uses this type of image insert because we insert image from user and product in one table ("images")
-            Image::create(['path' => $name, 'imageable_type' => 'App\Product', 'imageable_id' => $product->id]);
-        }
-
-        return redirect()->route('products.index');
+        //
     }
 
     /**
@@ -71,10 +52,20 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        //
+    }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
         // find product
         $product = Product::findOrFail($id);
-        
+
         // find if product have image, if not give product default image
         // Accessor in Image model give default value to path, so we have one more check
 
@@ -105,32 +96,12 @@ class ProductController extends Controller
             $users_array[] = $user->id;
         }
 
-        // Find if current user is owner of product, and put this data in variable
-        if(in_array(Auth::user()->id, $users_array))
-        {
-            $owner = true;
-        }else
-        {
-            $owner = false;
-        }
-
         // Find all user who own this product
 
         $owners = User::whereIn('id', $users_array)->get();
 
+        return view('admin.products.edit', compact('product', 'product_image', 'owners'));
 
-        return view('products.show', compact('product', 'product_image', 'owner', 'owners'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -142,7 +113,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // function update in this Controller we use to approve or un-approve product
+
+        $product = Product::findOrFail($id);
+
+        if($product->approved === 1)
+        {
+            $product->update(['approved' => 0]);
+        }else
+        {
+            $product->update(['approved' => 1]);
+        }
+
+        return redirect()->back();
+
+
     }
 
     /**
@@ -156,25 +141,8 @@ class ProductController extends Controller
         //
     }
     
-    // function for attach product with current user
-    
-    public function attach_product($product_id)
-    {
-        $user = Auth::user();
 
-        $user->products()->attach($product_id);
 
-        return redirect()->back();
-    }
 
-    // function for detach product from current user
 
-    public function detach_product($product_id)
-    {
-        $user = Auth::user();
-
-        $user->products()->detach($product_id);
-
-        return redirect()->back();
-    }
 }

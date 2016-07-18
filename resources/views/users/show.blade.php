@@ -31,11 +31,16 @@
 
                 @foreach($products as $product)
 
+                    {{-- Show only approved product, or if user is administrator show all products--}}
+                    @if($product->approved === 1 || Auth::user()->role_id === 1)
+
               <tr>
                 <td>{{$product->category->name}}</td>
                 <td>{{$product->model}}</td>
                 <td><a href="{{route('products.show', $product->id)}}">view</a></td>
               </tr>
+
+                    @endif
 
                     @endforeach
 

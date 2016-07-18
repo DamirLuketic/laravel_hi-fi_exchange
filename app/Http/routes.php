@@ -34,10 +34,27 @@ Route::resource('/users', 'UserController');
 
 Route::resource('/products', 'ProductController');
 
-// Add route and name for attach product to current user method
+// Add route and route name for attach product to current user method
 
 Route::post('/products/{id}/attach', ['as' => 'attach_product', 'uses' => 'ProductController@attach_product']);
 
-// Add route and name for detach product from current user method
+// Add route and route name for detach product from current user method
 
 Route::post('/products/{id}/detach', ['as' => 'detach_product', 'uses' => 'ProductController@detach_product']);
+
+
+// Admin middleware with Admin route, for products
+
+Route::group(['middleware' => 'Admin'], function()
+{
+
+    Route::resource('/admin/products', 'AdminProductController');
+    
+});
+
+
+
+
+
+
+

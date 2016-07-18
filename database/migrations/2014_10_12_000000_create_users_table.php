@@ -22,6 +22,10 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // Default user -> with administrator privileges
+
+        DB::table('users')->insert(['role_id' => '1', 'name' => 'Damir Luketić', 'slug' => 'damir-luke', 'email' => 'luketic.damir@gmail.com', 'password' => '$2y$10$A7Hc/smCegNtvjlX56gEE.TLkQDRiHBT6/b6jFsShIZkYSLhaNEZW']);
     }
 
     /**

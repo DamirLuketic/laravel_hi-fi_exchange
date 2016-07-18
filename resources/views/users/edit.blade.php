@@ -19,6 +19,8 @@
 
         @endif
 
+        @include('includes.form_error')
+
     </div>
 
 

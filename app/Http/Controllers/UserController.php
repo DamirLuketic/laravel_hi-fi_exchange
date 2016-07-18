@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
 use App\Image;
 use App\User;
 use Illuminate\Http\Request;
@@ -125,7 +126,6 @@ class UserController extends Controller
 
         }
 
-
         return view('users.edit', compact('user', 'products', 'user_image'));
     }
 
@@ -136,7 +136,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserEditRequest $request, $id)
     {
         // use 'Auth' user, so other user can't access person data
         $user = Auth::user();
@@ -179,7 +179,7 @@ class UserController extends Controller
 
         $user->update($input);
 
-        return redirect()->back();
+        return redirect()->route('users.edit', $user->id);
     }
 
     /**
