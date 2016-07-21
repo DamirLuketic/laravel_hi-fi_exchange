@@ -5,6 +5,7 @@ Packages included in Application:
 - laravelcollective/html => creating form in blade templates
 - cviebrock/eloquent-sluggable => rewrite url
 
+
 - Also use Node.js for compile SASS file
 
 The Application uses blade template for views, and CKeditor when inserting text in the database.
