@@ -6,8 +6,7 @@ Packages included in Application:
 - cviebrock/eloquent-sluggable => rewrite url
 
 
-
-- Also use Node.js for compile SASS file
+Also use Node.js for compile SASS file
 
 The Application uses blade template for views, and CKeditor when inserting text in the database.
 
